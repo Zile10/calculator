@@ -13,8 +13,8 @@ body {
 
 .calc-grid {
   display: grid;
-  grid-template-columns: repeat(4, 80px);
-  grid-template-rows: minmax(120px, auto) repeat(6, 80px);
+  grid-template-columns: repeat(4, 70px);
+  grid-template-rows: minmax(100px, auto) repeat(6, 70px);
   justify-content: center;
   align-content: center;
   min-height: 100vh;
@@ -30,6 +30,7 @@ body {
 }
 .previous-operand {
   font-size: small;
+  color: rgba(255, 255, 255, 0.7);
 }
 .current-operand {
   font-size: larger;
@@ -44,4 +45,13 @@ body {
 }
 .calc-grid > button:hover {
   background-color: rgba(0, 0, 0, 0.9);
+}
+.calc-grid > button:active {
+  border: 1px solid cyan;
+}
+button[data-all-clear], button[data-delete], button[data-equals] {
+  background-color: rgba(220, 20, 60, 0.75);
+}
+button[data-all-clear]:hover, button[data-delete]:hover, button[data-equals]:hover {
+  background-color: rgba(220, 20, 60, 0.9);
 }
