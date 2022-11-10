@@ -42,6 +42,7 @@ body {
 .calc-grid > button {
   background-color: rgba(1, 1, 1, 0.7);
   font-weight: bold;
+  font-size: large;
 }
 .calc-grid > button:hover {
   background-color: rgba(0, 0, 0, 0.9);
