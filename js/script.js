@@ -34,7 +34,7 @@ equalsButton.addEventListener('click', () => {
   // Evaluating the expression from the memory
   let result = eval(expression) 
   // Setting precious operation on the display to the current operand
-  previousOperand.textContent = currentOperand
+  previousOperand.textContent = currentOperand.textContent
   // Changing current Operand on display to the result of the calculation, and saving it to the memory
   currentOperand.textContent = result
   calculationMemory =  result.toString()
