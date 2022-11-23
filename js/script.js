@@ -9,7 +9,7 @@ const equalsButton = document.querySelector('[data-equals]');
 // Creating Calculation memory variable, which will have the value of the previous calculation by default
 let calculationMemory = previousOperand.textContent;
 
-// Clearing Displays and memory when 'AC' button clicked
+// Clearing 2 Displays and the memory when 'AC' button clicked
 allClearButton.addEventListener('click', () => {
   previousOperand.textContent = ''
   currentOperand.textContent = ''
@@ -20,7 +20,7 @@ deleteButton.addEventListener('click', () => {
   calculationMemory = calculationMemory.slice(0, -1)
   logToCurrent()
 })
-//For each number/operation button, when clicked, add its symbol/number to the memory, and update display
+//For each number/operation button, add an event listener, so that when clicked, it adds its symbol/number to the memory string, and updates 'current' display
 mathButtons.forEach((button) => {
   button.addEventListener('click', () => {
     calculationMemory += `${button.textContent}`
@@ -29,7 +29,7 @@ mathButtons.forEach((button) => {
 })
 
 equalsButton.addEventListener('click', () => {
-  // Replace all Special Characters in memory, with characters that JS can calculate with.
+  // Replace all Special Characters in memory string, with characters that JS can calculate with.
   let expression = calculationMemory.replaceAll('√', '**(1/2)').replaceAll('^', '**').replaceAll('×', '*').replaceAll('÷', '/')
   // Evaluating the expression from the memory
   let result = eval(expression) 
