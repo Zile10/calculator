@@ -6,12 +6,12 @@ const allClearButton = document.querySelector('[data-all-clear]');
 const deleteButton = document.querySelector('[data-delete]');
 const operationButtons = document.querySelectorAll('[data-operation]');
 const numberButtons = document.querySelectorAll('[data-number]');
+const decimal = document.querySelector('[data-decimal]')
 // const mathButtons = document.querySelectorAll('[data-operation], [data-number]');
 const equalsButton = document.querySelector('[data-equals]');
 // Creating Calculation memory variable, which will have the value of the previous calculation by default
 let calculationMemory = previousOperand.textContent;
-let lastOperationIndex = 0;
-let subMemory = calculationMemory.slice(lastOperationIndex, calculationMemory.length-1)
+let decimalAllowed = true;
 
 // Clearing 2 Displays and the memory when 'AC' button clicked
 allClearButton.addEventListener('click', () => {
@@ -31,24 +31,23 @@ numberButtons.forEach((button) => {
   button.addEventListener('click', () => {
     calculationMemory += `${button.textContent}`
     logToCurrent()
-    console.log(subMemory);
   })
 })
 operationButtons.forEach((button) => {
   button.addEventListener('click', () => {
     calculationMemory += `${button.textContent}`
-    lastOperationIndex = calculationMemory.lastIndexOf(`${button.textContent}`)
     logToCurrent()
-    console.log(calculationMemory[lastOperationIndex]);
-    
+    decimalAllowed = true    
   })
 })
-// mathButtons.forEach((button) => {
-//   button.addEventListener('click', () => {
-//     calculationMemory += `${button.textContent}`
-//     logToCurrent()
-//   })
-// })
+
+decimal.addEventListener('click', () => {
+  if (decimalAllowed ) {
+    calculationMemory += `${decimal.textContent}`
+    logToCurrent()
+    decimalAllowed = false
+  }
+})
 
 equalsButton.addEventListener('click', () => {
   // Replace all Special Characters in memory string, with characters that JS can calculate with.
