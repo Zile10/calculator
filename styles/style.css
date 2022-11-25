@@ -27,6 +27,7 @@ body {
   justify-content: space-around;
   flex-direction: column;
   padding: 10px;
+  overflow-x: hidden;
 }
 .previous-operand {
   font-size: small;
@@ -54,5 +55,5 @@ button[data-all-clear], button[data-delete], button[data-equals] {
   background-color: rgba(220, 20, 60, 0.75);
 }
 button[data-all-clear]:hover, button[data-delete]:hover, button[data-equals]:hover {
-  background-color: rgba(220, 20, 60, 0.9);
+  background-color: rgba(220, 20, 60, 1);
 }

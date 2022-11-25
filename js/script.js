@@ -4,29 +4,51 @@ const currentOperand = document.querySelector('[data-current-operand]');
 // Grabbing Buttons from the DOM
 const allClearButton = document.querySelector('[data-all-clear]');
 const deleteButton = document.querySelector('[data-delete]');
-const mathButtons = document.querySelectorAll('[data-operation], [data-number]');
+const operationButtons = document.querySelectorAll('[data-operation]');
+const numberButtons = document.querySelectorAll('[data-number]');
+// const mathButtons = document.querySelectorAll('[data-operation], [data-number]');
 const equalsButton = document.querySelector('[data-equals]');
 // Creating Calculation memory variable, which will have the value of the previous calculation by default
 let calculationMemory = previousOperand.textContent;
+let lastOperationIndex = 0;
+let subMemory = calculationMemory.slice(lastOperationIndex, calculationMemory.length-1)
 
 // Clearing 2 Displays and the memory when 'AC' button clicked
 allClearButton.addEventListener('click', () => {
   previousOperand.textContent = ''
   currentOperand.textContent = ''
   calculationMemory = ''
+  lastPressed = 'ac'
 })
 // Removes last character from memory string then updating the display when clicking 'Delete'
 deleteButton.addEventListener('click', () => {
   calculationMemory = calculationMemory.slice(0, -1)
+  lastPressed = 'del'
   logToCurrent()
 })
 //For each number/operation button, add an event listener, so that when clicked, it adds its symbol/number to the memory string, and updates 'current' display
-mathButtons.forEach((button) => {
+numberButtons.forEach((button) => {
   button.addEventListener('click', () => {
     calculationMemory += `${button.textContent}`
     logToCurrent()
+    console.log(subMemory);
   })
 })
+operationButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    calculationMemory += `${button.textContent}`
+    lastOperationIndex = calculationMemory.lastIndexOf(`${button.textContent}`)
+    logToCurrent()
+    console.log(calculationMemory[lastOperationIndex]);
+    
+  })
+})
+// mathButtons.forEach((button) => {
+//   button.addEventListener('click', () => {
+//     calculationMemory += `${button.textContent}`
+//     logToCurrent()
+//   })
+// })
 
 equalsButton.addEventListener('click', () => {
   // Replace all Special Characters in memory string, with characters that JS can calculate with.
