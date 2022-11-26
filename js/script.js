@@ -1,53 +1,57 @@
-// Grabbing Current/Previous operand displays from the DOM
+// 'Buttons and Displays' variables
 const previousOperand = document.querySelector('[data-previous-operand]');
 const currentOperand = document.querySelector('[data-current-operand]');
-// Grabbing Buttons from the DOM
-const allClearButton = document.querySelector('[data-all-clear]');
-const deleteButton = document.querySelector('[data-delete]');
-const operationButtons = document.querySelectorAll('[data-operation]');
-const numberButtons = document.querySelectorAll('[data-number]');
+const allClearBtn = document.querySelector('[data-all-clear]');
+const deleteBtn = document.querySelector('[data-delete]');
+const operationBtns = document.querySelectorAll('[data-operation]');
+const numberBtns = document.querySelectorAll('[data-number]');
 const decimal = document.querySelector('[data-decimal]')
-const equalsButton = document.querySelector('[data-equals]');
-
+const equalsBtn = document.querySelector('[data-equals]');
+// Memory Variables
 let calculationMemory = previousOperand.textContent;
 let decimalAllowed = true;
 let squareRootCounter = 0
 
-// Clearing 2 Displays and the memory when 'AC' button clicked
-allClearButton.addEventListener('click', () => {
+// Reset All values when AC is clicked
+allClearBtn.addEventListener('click', () => {
   previousOperand.textContent = ''
   currentOperand.textContent = ''
   calculationMemory = ''
   decimalAllowed = true
   squareRootCounter = 0
 })
-// Removes last character from memory string then updating the display when clicking 'Delete'
-deleteButton.addEventListener('click', () => {
+
+deleteBtn.addEventListener('click', () => {
+  // Accounting for Decimal and Square Root
   if (calculationMemory[calculationMemory.length-1] == '.') {
     decimalAllowed = true
   } else if (calculationMemory[calculationMemory.length-1] == '√') {
     squareRootCounter--
   }
+  // Deletes last character
   calculationMemory = calculationMemory.slice(0, -1)
   logToCurrent()
 })
-//For each number/operation button, add an event listener, so that when clicked, it adds its symbol/number to the memory string, and updates 'current' display
-numberButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    calculationMemory += `${button.textContent}`
+
+// Add Numbers to Memory & Display when numbers clicked
+numberBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    calculationMemory += `${btn.textContent}`
     logToCurrent()
   })
 })
-operationButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    if (button.textContent == '√') {
+
+operationBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    // When '√' clicked, it will be treating differently in Memory on display. Since Bracket is used, Closing bracket will be treated differntly as well. Using '_' symbol as a placeholder to later replace/edit for functionality purposes.
+    if (btn.textContent == '√') {
       calculationMemory += '√('
       squareRootCounter++
-    } else if (squareRootCounter>0 && button.textContent == ')') {
+    } else if (squareRootCounter>0 && btn.textContent == ')') {
       calculationMemory += '_'
       squareRootCounter--
     } else {
-      calculationMemory += `${button.textContent}`
+      calculationMemory += `${btn.textContent}`
     }
       logToCurrent()
       decimalAllowed = true
@@ -55,18 +59,19 @@ operationButtons.forEach((button) => {
 })
 
 decimal.addEventListener('click', () => {
-  if (decimalAllowed ) {
+  // Only allow decimal if conditions are met, e.g. if it has not been used in current number already
+  if (decimalAllowed) {
     calculationMemory += `${decimal.textContent}`
     logToCurrent()
     decimalAllowed = false
   }
 })
 
-equalsButton.addEventListener('click', () => {
-  // Replace all Special Characters in memory string, with characters that JS can calculate with.
+equalsBtn.addEventListener('click', () => {
+  // Replace all Special Characters in memory, with characters that JS can calculate with.
   let expression = calculationMemory.replaceAll('√', '').replaceAll('^', '**').replaceAll('×', '*').replaceAll('÷', '/').replaceAll('_', ')**(1/2)')
   
-  // Evalutation and Error Handling
+  // Evalutating expression and error Handling
   try {
     let result = JSON.stringify(eval(expression))
     if (result.includes('.')) {
@@ -88,7 +93,7 @@ equalsButton.addEventListener('click', () => {
   }
   squareRootCounter = 0
 })
-//Updates Current Operand Display
+//Updates the Current Operand Display
 function logToCurrent() {
   currentOperand.textContent = calculationMemory.replaceAll('××', '^').replaceAll('_', ')')
 }
