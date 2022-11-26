@@ -11,6 +11,7 @@ const equalsButton = document.querySelector('[data-equals]');
 
 let calculationMemory = previousOperand.textContent;
 let decimalAllowed = true;
+let squareRootCounter = 0
 
 // Clearing 2 Displays and the memory when 'AC' button clicked
 allClearButton.addEventListener('click', () => {
@@ -18,11 +19,14 @@ allClearButton.addEventListener('click', () => {
   currentOperand.textContent = ''
   calculationMemory = ''
   decimalAllowed = true
+  squareRootCounter = 0
 })
 // Removes last character from memory string then updating the display when clicking 'Delete'
 deleteButton.addEventListener('click', () => {
   if (calculationMemory[calculationMemory.length-1] == '.') {
     decimalAllowed = true
+  } else if (calculationMemory[calculationMemory.length-1] == '√') {
+    squareRootCounter--
   }
   calculationMemory = calculationMemory.slice(0, -1)
   logToCurrent()
@@ -36,9 +40,17 @@ numberButtons.forEach((button) => {
 })
 operationButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    calculationMemory += `${button.textContent}`
-    logToCurrent()
-    decimalAllowed = true
+    if (button.textContent == '√') {
+      calculationMemory += '√('
+      squareRootCounter++
+    } else if (squareRootCounter>0 && button.textContent == ')') {
+      calculationMemory += '_'
+      squareRootCounter--
+    } else {
+      calculationMemory += `${button.textContent}`
+    }
+      logToCurrent()
+      decimalAllowed = true
   })
 })
 
@@ -52,7 +64,7 @@ decimal.addEventListener('click', () => {
 
 equalsButton.addEventListener('click', () => {
   // Replace all Special Characters in memory string, with characters that JS can calculate with.
-  let expression = calculationMemory.replaceAll('√', '**(1/2)').replaceAll('^', '**').replaceAll('×', '*').replaceAll('÷', '/')
+  let expression = calculationMemory.replaceAll('√', '').replaceAll('^', '**').replaceAll('×', '*').replaceAll('÷', '/').replaceAll('_', ')**(1/2)')
   // Evaluating the expression from the memory
   try {
     let result = JSON.stringify(eval(expression))
@@ -75,8 +87,9 @@ equalsButton.addEventListener('click', () => {
     previousOperand.textContent = currentOperand.textContent
     currentOperand.textContent = 'ERROR: INVALID SYNTAX'
   }
+  squareRootCounter = 0
 })
 //Updates Current Operand Display
 function logToCurrent() {
-  currentOperand.textContent = calculationMemory.replaceAll('××', '^').replaceAll('√', '^(1/2)')
+  currentOperand.textContent = calculationMemory.replaceAll('××', '^').replaceAll('_', ')')
 }
