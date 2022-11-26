@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 body {
@@ -32,7 +32,7 @@ body {
 }
 .previous-operand {
   font-size: small;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.75);
 }
 .current-operand {
   font-size: larger;
@@ -51,11 +51,17 @@ body {
   background-color: rgba(0, 0, 0, 0.9);
 }
 .calc-grid > button:active {
-  border: 1px solid darkcyan;
+  background-color: rgba(255, 255, 255, 0.75);
+  color: rgba(0, 0, 0, 0.9);
+
 }
 button[data-all-clear], button[data-delete], button[data-equals] {
-  background-color: rgba(220, 20, 60, 0.75);
+  background-color: crimson;
 }
 button[data-all-clear]:hover, button[data-delete]:hover, button[data-equals]:hover {
-  background-color: rgba(220, 20, 60, 1);
+  background-color: rgb(220, 10, 30);
+}
+button[data-all-clear]:active, button[data-delete]:active, button[data-equals]:active {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: rgba(220, 20, 60, 1);
 }
