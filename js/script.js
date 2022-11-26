@@ -7,9 +7,8 @@ const deleteButton = document.querySelector('[data-delete]');
 const operationButtons = document.querySelectorAll('[data-operation]');
 const numberButtons = document.querySelectorAll('[data-number]');
 const decimal = document.querySelector('[data-decimal]')
-// const mathButtons = document.querySelectorAll('[data-operation], [data-number]');
 const equalsButton = document.querySelector('[data-equals]');
-// Creating Calculation memory variable, which will have the value of the previous calculation by default
+
 let calculationMemory = previousOperand.textContent;
 let decimalAllowed = true;
 
@@ -18,12 +17,14 @@ allClearButton.addEventListener('click', () => {
   previousOperand.textContent = ''
   currentOperand.textContent = ''
   calculationMemory = ''
-  lastPressed = 'ac'
+  decimalAllowed = true
 })
 // Removes last character from memory string then updating the display when clicking 'Delete'
 deleteButton.addEventListener('click', () => {
+  if (calculationMemory[calculationMemory.length-1] == '.') {
+    decimalAllowed = true
+  }
   calculationMemory = calculationMemory.slice(0, -1)
-  lastPressed = 'del'
   logToCurrent()
 })
 //For each number/operation button, add an event listener, so that when clicked, it adds its symbol/number to the memory string, and updates 'current' display
@@ -37,7 +38,7 @@ operationButtons.forEach((button) => {
   button.addEventListener('click', () => {
     calculationMemory += `${button.textContent}`
     logToCurrent()
-    decimalAllowed = true    
+    decimalAllowed = true
   })
 })
 
@@ -53,12 +54,25 @@ equalsButton.addEventListener('click', () => {
   // Replace all Special Characters in memory string, with characters that JS can calculate with.
   let expression = calculationMemory.replaceAll('√', '**(1/2)').replaceAll('^', '**').replaceAll('×', '*').replaceAll('÷', '/')
   // Evaluating the expression from the memory
-  let result = eval(expression) 
-  // Setting precious operation on the display to the current operand
-  previousOperand.textContent = currentOperand.textContent
-  // Changing current Operand on display to the result of the calculation, and saving it to the memory
-  currentOperand.textContent = result
-  calculationMemory =  result.toString()
+  try {
+    let result = JSON.stringify(eval(expression))
+  
+    if (result.includes('.')) {
+      decimalAllowed = false
+    } else decimalAllowed = true
+
+    // Setting precious operation on the display to the current operand
+    previousOperand.textContent = currentOperand.textContent
+    // Changing current Operand on display to the result of the calculation, and saving it to the memory
+    if (result == null) {
+      currentOperand.textContent = 'INFINITY'
+    } else {currentOperand.textContent = result}
+    calculationMemory =  result
+  } catch (e){
+    console.log(e);
+    previousOperand.textContent = currentOperand.textContent
+    currentOperand.textContent = 'ERROR: INVALID SYNTAX'
+  }
 })
 //Updates Current Operand Display
 function logToCurrent() {
