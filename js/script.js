@@ -56,7 +56,6 @@ equalsButton.addEventListener('click', () => {
   // Evaluating the expression from the memory
   try {
     let result = JSON.stringify(eval(expression))
-  
     if (result.includes('.')) {
       decimalAllowed = false
     } else decimalAllowed = true
@@ -64,10 +63,13 @@ equalsButton.addEventListener('click', () => {
     // Setting precious operation on the display to the current operand
     previousOperand.textContent = currentOperand.textContent
     // Changing current Operand on display to the result of the calculation, and saving it to the memory
-    if (result == null) {
-      currentOperand.textContent = 'INFINITY'
-    } else {currentOperand.textContent = result}
-    calculationMemory =  result
+    if (result == 'null') {
+      currentOperand.textContent = "ERROR: CAN'T DIVIDE BY ZERO"
+    } else {
+      currentOperand.textContent = result
+      calculationMemory =  result
+    }
+
   } catch (e){
     console.log(e);
     previousOperand.textContent = currentOperand.textContent
